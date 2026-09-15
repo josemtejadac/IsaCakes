@@ -147,6 +147,79 @@ body{
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
+/* ── PROMO BANNER ── */
+.promo-banner{
+  position:relative;
+  min-height:min(80vh,560px);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  padding:0;
+}
+.promo-banner-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  animation:promoZoom 14s ease-in-out infinite alternate;
+}
+@keyframes promoZoom{
+  0%{transform:scale(1)}
+  100%{transform:scale(1.09)}
+}
+.promo-banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,8,15,0.35) 0%,rgba(20,8,15,0.15) 45%,rgba(20,8,15,0.65) 100%);
+  z-index:1;
+}
+.promo-banner-content{
+  position:relative;z-index:2;
+  text-align:center;color:#fff;
+  padding:32px 24px;
+  max-width:640px;
+}
+.promo-banner-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.75rem;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.3);
+  padding:7px 18px;border-radius:20px;
+  margin-bottom:22px;
+  animation:promoFloat 3s ease-in-out infinite;
+}
+.promo-banner-badge svg{width:14px;height:14px;fill:#F4D03F;animation:promoSpin 4s linear infinite}
+@keyframes promoSpin{to{transform:rotate(360deg)}}
+@keyframes promoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.promo-banner h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,5vw,3.4rem);
+  font-weight:700;line-height:1.15;
+  text-shadow:0 4px 24px rgba(0,0,0,0.4);
+  animation:fadeUp .9s .1s ease both;
+}
+.promo-banner h2 em{font-style:italic;color:var(--rose-light)}
+.promo-banner p{
+  font-size:1rem;line-height:1.7;
+  color:rgba(255,255,255,0.9);
+  margin-top:16px;
+  animation:fadeUp .9s .25s ease both;
+}
+.promo-banner-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:28px;
+  background:var(--rose);color:#fff;
+  padding:14px 34px;border-radius:40px;
+  font-size:.9rem;font-weight:600;
+  text-decoration:none;
+  box-shadow:0 8px 28px rgba(0,0,0,0.35);
+  transition:background .3s, transform .2s;
+  animation:fadeUp .9s .4s ease both;
+}
+.promo-banner-cta:hover{background:#fff;color:var(--rose);transform:translateY(-2px)}
+@media(max-width:768px){
+  .promo-banner{min-height:70vh}
+}
+
 /* ── SECTIONS ── */
 section{padding:80px 24px}
 .section-header{text-align:center;margin-bottom:56px}
@@ -263,6 +336,186 @@ section{padding:80px 24px}
   line-height:1.5;
 }
 
+/* ── CREA TU TORTA ── */
+.builder-section{background:var(--white)}
+.builder-wrap{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:340px 1fr;gap:48px;
+  align-items:start;
+}
+.builder-preview-col{
+  position:sticky;top:100px;
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--rose-pale);
+  border-radius:24px;padding:32px 16px 24px;
+}
+.cake-illustration{
+  position:relative;width:220px;height:260px;
+  margin-bottom:8px;
+}
+.ci-plate{
+  position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+  width:190px;height:16px;border-radius:50%;
+  background:linear-gradient(180deg,#fff,#e4dcd6);
+  box-shadow:0 4px 10px rgba(92,61,46,0.15);
+}
+.ci-tier{
+  position:absolute;left:50%;transform:translateX(-50%);
+  border-radius:10px 10px 6px 6px;
+  background:var(--ci-primary,#E8B4BC);
+  box-shadow:inset 0 -6px 10px rgba(0,0,0,0.08), 0 6px 14px rgba(92,61,46,0.12);
+  transition:width .35s, height .35s, bottom .35s, background .35s;
+}
+.ci-tier::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:10px;
+  border-radius:10px 10px 0 0;
+  background:var(--ci-secondary,#C4788A);
+  opacity:.55;
+}
+.ci-sticker{
+  position:absolute;font-size:1.1rem;z-index:5;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+  animation:promoFloat 2.6s ease-in-out infinite;
+}
+.ci-candle{position:absolute;font-size:.9rem;z-index:6}
+.cake-illustration.shape-cuadrada .ci-tier{border-radius:6px}
+.cake-illustration.shape-cuadrada .ci-tier::before{border-radius:6px 6px 0 0}
+.ci-tier.coat-fondant{box-shadow:inset 0 -4px 6px rgba(0,0,0,0.05), 0 6px 14px rgba(92,61,46,0.12)}
+.ci-tier.coat-ganache{background-image:linear-gradient(180deg,rgba(255,255,255,0.35),transparent 40%);box-shadow:inset 0 -8px 14px rgba(0,0,0,0.18), 0 8px 18px rgba(92,61,46,0.2)}
+.ci-tier.coat-merengue::after{
+  content:'';position:absolute;top:-6px;left:0;right:0;height:12px;
+  background:repeating-radial-gradient(circle at 8px 8px,var(--ci-secondary,#C4788A) 0 4px,transparent 5px 16px);
+  opacity:.7;
+}
+.ci-tier.coat-chantilly{background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.18) 0 2px,transparent 2px 8px)}
+
+.tier-config{
+  border:1px solid rgba(92,61,46,0.15);border-radius:14px;
+  padding:14px 16px;margin-bottom:10px;background:var(--cream);
+}
+.tier-config .tier-config-title{font-size:.8rem;font-weight:600;color:var(--brown);margin-bottom:8px}
+.tier-config select{
+  padding:8px 10px;border-radius:8px;border:1px solid rgba(92,61,46,0.18);
+  font-size:.8rem;background:#fff;color:var(--text);margin-right:8px;margin-bottom:6px;
+}
+.custom-color-swatch{
+  width:40px;height:40px;border-radius:50%;cursor:pointer;
+  border:3px solid transparent;padding:0;
+  background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
+}
+.custom-color-swatch.active{border-color:var(--brown);transform:scale(1.1)}
+.candles-control{display:flex;align-items:center;gap:12px}
+.candles-control button{
+  width:34px;height:34px;border-radius:50%;border:1px solid rgba(92,61,46,0.2);
+  background:var(--cream);cursor:pointer;font-size:1rem;color:var(--brown);
+}
+.candles-control span{font-weight:600;color:var(--brown);min-width:24px;text-align:center}
+.ci-slice{
+  position:absolute;width:34px;height:34px;
+  right:8px;bottom:24px;z-index:3;
+  clip-path:polygon(100% 0,100% 100%,0 100%);
+  overflow:hidden;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  border-radius:0 0 4px 0;
+}
+.ci-slice-crumb{position:absolute;inset:0;background:var(--ci-crumb,#F5E6C8)}
+.ci-slice-fill{position:absolute;left:0;right:0;top:38%;height:24%;background:var(--ci-filling,#C68E3F)}
+.ci-plaque{
+  position:absolute;left:50%;top:-6px;transform:translate(-50%,-100%);
+  background:#fff;color:var(--brown);
+  font-family:'Playfair Display',serif;font-weight:600;
+  font-size:.62rem;line-height:1.3;text-align:center;
+  padding:6px 10px;border-radius:8px;
+  max-width:150px;word-break:break-word;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  z-index:4;
+}
+.ci-dot{
+  position:absolute;border-radius:50%;
+  width:6px;height:6px;
+  background:var(--ci-accent,#D4A843);
+  z-index:2;
+}
+.builder-preview-note{font-size:.78rem;color:var(--text-light);text-align:center;margin-top:12px}
+.builder-form-col{width:100%}
+.builder-group{margin-bottom:26px}
+.builder-group label.group-label{
+  display:block;font-family:'Playfair Display',serif;
+  font-size:1rem;font-weight:600;color:var(--brown);margin-bottom:10px;
+}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px}
+.pill-row button{
+  border:1px solid rgba(92,61,46,0.2);
+  background:var(--cream);color:var(--text);
+  padding:9px 16px;border-radius:20px;
+  font-size:.82rem;cursor:pointer;transition:.2s;
+}
+.pill-row button:hover{border-color:var(--rose)}
+.pill-row button.active{background:var(--rose);border-color:var(--rose);color:#fff}
+.theme-row{display:flex;flex-wrap:wrap;gap:12px}
+.theme-swatch{
+  width:40px;height:40px;border-radius:50%;
+  cursor:pointer;border:3px solid transparent;
+  transition:.2s;position:relative;
+}
+.theme-swatch.active{border-color:var(--brown);transform:scale(1.1)}
+.builder-group input[type=text],
+.builder-group textarea{
+  width:100%;padding:11px 14px;
+  border:1px solid rgba(92,61,46,0.18);
+  border-radius:10px;font-family:inherit;font-size:.9rem;
+  background:var(--cream);color:var(--text);
+}
+.builder-group textarea{min-height:70px;resize:vertical}
+.builder-summary{
+  background:var(--rose-pale);border-radius:16px;
+  padding:20px 22px;margin-top:8px;margin-bottom:20px;
+  font-size:.85rem;color:var(--text);line-height:1.7;
+}
+.builder-summary strong{color:var(--brown)}
+.builder-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#25D366;color:#fff;
+  padding:14px 30px;border-radius:30px;
+  font-size:.9rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;
+  transition:transform .2s;
+}
+.builder-cta:hover{transform:translateY(-2px)}
+.builder-cta svg{width:18px;height:18px;fill:currentColor}
+@media(max-width:860px){
+  .builder-wrap{grid-template-columns:1fr}
+  .builder-preview-col{position:static}
+}
+
+/* ── 3D CAKE VIEWER ── */
+.cake-illustration{
+  position:relative;width:260px;height:300px;
+  margin-bottom:4px;
+}
+.cake-illustration canvas{
+  border-radius:16px;cursor:grab;touch-action:none;
+}
+.cake-illustration canvas:active{cursor:grabbing}
+.builder-preview-hint{
+  font-size:.72rem;color:var(--text-light);
+  display:flex;align-items:center;gap:6px;margin-top:2px;
+}
+.builder-preview-hint svg{width:14px;height:14px;stroke:var(--rose)}
+.ci-slice{
+  position:absolute;width:34px;height:34px;
+  right:10px;bottom:14px;z-index:3;
+  clip-path:polygon(100% 0,100% 100%,0 100%);
+  overflow:hidden;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+  border-radius:0 0 4px 0;
+}
+.ci-slice-crumb{position:absolute;inset:0;background:var(--ci-crumb,#F5E6C8)}
+.ci-slice-fill{position:absolute;left:0;right:0;top:38%;height:24%;background:var(--ci-filling,#C68E3F)}
+.cake-3d-loading{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--text-light);text-align:center;padding:20px;
+}
+
 /* ── ABOUT ── */
 .about-section{
   background:linear-gradient(135deg,var(--rose-pale) 0%,var(--cream) 100%);
@@ -340,9 +593,15 @@ section{padding:80px 24px}
   border-radius:20px;overflow-y:auto;
   box-shadow:0 24px 80px rgba(0,0,0,0.3);
   animation:lbIn .4s cubic-bezier(.22,1,.36,1) both;
+  display:flex;flex-direction:column;
 }
 @keyframes lbIn{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.lightbox-img{width:100%;object-fit:contain;display:block;background:var(--rose-pale)}
+.lightbox-img{
+  width:100%;max-height:min(60vh,480px);
+  object-fit:contain;display:block;
+  background:var(--rose-pale);
+  flex-shrink:0;
+}
 .lightbox-info{padding:20px 24px 24px}
 .lightbox-info h3{
   font-family:'Playfair Display',serif;
@@ -362,6 +621,102 @@ section{padding:80px 24px}
 }
 .lightbox-close:hover{background:rgba(255,255,255,0.25)}
 .lightbox-close svg{width:20px;height:20px;stroke:white;stroke-width:2}
+
+.gallery-loading{
+  grid-column:1/-1;text-align:center;
+  color:var(--text-light);font-size:.9rem;padding:24px;
+}
+.cake-card-admin-bar{
+  position:absolute;top:12px;left:12px;right:12px;z-index:2;
+  display:flex;gap:6px;flex-wrap:wrap;
+  opacity:0;transition:opacity .25s;
+}
+.cake-card:hover .cake-card-admin-bar,
+.cake-card-admin-bar.force-show{opacity:1}
+.cake-card-admin-bar button{
+  border:none;cursor:pointer;
+  font-size:.68rem;font-weight:600;
+  padding:5px 10px;border-radius:14px;
+  background:rgba(255,255,255,0.95);
+  color:var(--brown);
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.cake-card-admin-bar button.danger{color:#b3261e}
+.cake-card-admin-bar button:hover{background:var(--rose);color:#fff}
+
+/* ── ADMIN ── */
+.admin-fab{
+  position:fixed;bottom:20px;right:20px;z-index:90;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--brown);color:var(--white);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(92,61,46,0.35);
+  font-size:1.1rem;
+  opacity:.55;transition:opacity .2s, transform .2s;
+}
+.admin-fab:hover{opacity:1;transform:translateY(-2px)}
+.admin-modal{
+  position:fixed;inset:0;z-index:210;
+  background:rgba(30,20,15,0.55);
+  backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.admin-modal.active{display:flex}
+.admin-box{
+  background:var(--white);
+  border-radius:20px;
+  padding:32px;
+  width:100%;max-width:440px;
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 24px 80px rgba(0,0,0,0.3);
+  position:relative;
+}
+.admin-box h3{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;color:var(--brown);margin-bottom:6px;
+}
+.admin-box .admin-sub{font-size:.82rem;color:var(--text-light);margin-bottom:20px}
+.admin-close{
+  position:absolute;top:16px;right:16px;
+  background:none;border:none;cursor:pointer;
+  font-size:1.3rem;color:var(--text-light);line-height:1;
+}
+.admin-field{margin-bottom:16px}
+.admin-field label{
+  display:block;font-size:.8rem;font-weight:600;
+  color:var(--brown);margin-bottom:6px;
+}
+.admin-field input[type=text],
+.admin-field input[type=password],
+.admin-field textarea,
+.admin-field select{
+  width:100%;padding:11px 14px;
+  border:1px solid rgba(92,61,46,0.18);
+  border-radius:10px;font-family:inherit;font-size:.9rem;
+  color:var(--text);background:var(--cream);
+}
+.admin-field textarea{resize:vertical;min-height:70px}
+.admin-btn{
+  width:100%;padding:12px;border:none;border-radius:30px;
+  background:var(--rose);color:#fff;font-weight:600;font-size:.9rem;
+  cursor:pointer;transition:background .25s;
+}
+.admin-btn:hover{background:var(--brown)}
+.admin-btn:disabled{opacity:.6;cursor:not-allowed}
+.admin-msg{font-size:.82rem;margin-top:12px;text-align:center}
+.admin-msg.error{color:#b3261e}
+.admin-msg.ok{color:#1e7d32}
+.admin-logout{
+  margin-top:18px;background:none;border:none;
+  color:var(--text-light);font-size:.8rem;text-decoration:underline;cursor:pointer;
+}
+.admin-preview{
+  width:100%;max-height:180px;object-fit:contain;
+  border-radius:12px;margin-top:10px;display:none;
+  background:var(--rose-pale);
+}
 
 /* ── SCROLL REVEAL ── */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease, transform .7s ease}
@@ -405,7 +760,9 @@ section{padding:80px 24px}
   <div class="nav-inner">
     <div class="nav-logo">isa<span>'</span>cakes</div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#tortas" onclick="closeMenu()">Tortas</a></li>
+      <li><a href="#tortas-ninos" onclick="closeMenu()">Tortas Niños</a></li>
+      <li><a href="#tortas-adultos" onclick="closeMenu()">Tortas Adultos</a></li>
+      <li><a href="#crea-tu-torta" onclick="closeMenu()">Crea tu Torta</a></li>
       <li><a href="#postres" onclick="closeMenu()">Postres</a></li>
       <li><a href="#nosotros" onclick="closeMenu()">Nosotros</a></li>
       <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
@@ -432,95 +789,184 @@ section{padding:80px 24px}
   </div>
 </section>
 
-<!-- TORTAS GRANDES -->
-<section id="tortas">
+<!-- PROMO BANNER -->
+<section class="promo-banner">
+  <img src="img/promo1.jpg" alt="Torta temática Huntrix para Isabella, decorada con luces neón" class="promo-banner-img" loading="eager">
+  <div class="promo-banner-content">
+    <span class="promo-banner-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2-6.3-4.5L5.7 21l2.3-7.2-6-4.6h7.6z"/></svg>
+      Diseños que sorprenden
+    </span>
+    <h2>Pequeños detalles, <em>grandes momentos</em></h2>
+    <p>Ideas que endulzan tu día. Cuéntanos tu tema favorito y lo transformamos en una torta inolvidable.</p>
+    <a href="https://wa.me/56933263305" class="promo-banner-cta" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.478l4.59-1.472A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.585-5.932-1.606l-.424-.254-2.725.874.863-2.658-.278-.44A9.78 9.78 0 012.182 12c0-5.422 4.396-9.818 9.818-9.818S21.818 6.578 21.818 12s-4.396 9.818-9.818 9.818z"/></svg>
+      Haz tu pedido
+    </a>
+  </div>
+</section>
+
+<!-- TORTAS NIÑOS -->
+<section id="tortas-ninos">
   <div class="section-header reveal">
-    <h2>Tortas Personalizadas</h2>
-    <p>Cada torta es una obra de arte diseñada a tu gusto. Elegí el sabor, la temática y nosotros hacemos la magia.</p>
+    <h2>Tortas Niños</h2>
+    <p>Temáticas divertidas y coloridas para hacer inolvidable el cumpleaños de los más pequeños.</p>
     <div class="section-divider"></div>
   </div>
   <div class="gallery">
-    <div class="gallery-grid">
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Fresas & Frambuesas" data-desc="Suave bizcocho de vainilla relleno con crema pastelera, fresas y frambuesas frescas. Decorada con láminas de oro y frutos rojos naturales." data-img="img/torta1.jpg">
-        <img src="img/torta1.jpg" alt="Torta de vainilla con fresas y frambuesas" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Vainilla</span>
-        <div class="cake-card-overlay">
-          <h3>Fresas & Frambuesas</h3>
-          <p>Vainilla rellena en crema con fresas y frambuesas frescas</p>
+    <div class="gallery-grid" id="grid-ninos">
+      <p class="gallery-loading">Cargando tortas…</p>
+    </div>
+  </div>
+</section>
+
+<!-- TORTAS ADULTOS -->
+<section id="tortas-adultos">
+  <div class="section-header reveal">
+    <h2>Tortas Adultos</h2>
+    <p>Diseños elegantes y sofisticados para cumpleaños, aniversarios y celebraciones especiales.</p>
+    <div class="section-divider"></div>
+  </div>
+  <div class="gallery">
+    <div class="gallery-grid" id="grid-adultos">
+      <p class="gallery-loading">Cargando tortas…</p>
+    </div>
+  </div>
+</section>
+
+<!-- CREA TU TORTA -->
+<section class="builder-section" id="crea-tu-torta">
+  <div class="section-header reveal">
+    <h2>Crea tu Torta</h2>
+    <p>Arma la torta de tus sueños: pisos, forma, sabores, colores y decoración. Mira cómo va tomando forma y cotízala directo por WhatsApp.</p>
+    <div class="section-divider"></div>
+  </div>
+  <div class="builder-wrap">
+    <div class="builder-preview-col reveal">
+      <div class="cake-illustration" id="cakeIllustration">
+        <div class="cake-3d-loading" id="cake3dLoading">Cargando vista 3D…</div>
+        <div class="ci-slice"><div class="ci-slice-crumb" id="ciCrumb"></div><div class="ci-slice-fill" id="ciFill"></div></div>
+      </div>
+      <p class="builder-preview-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-9-9"/><path d="M21 3v6h-6"/></svg>
+        Arrastra para girar la torta
+      </p>
+      <p class="builder-preview-note" id="ciSummaryLine">Personaliza tu torta con las opciones →</p>
+    </div>
+
+    <div class="builder-form-col">
+
+      <div class="builder-group">
+        <label class="group-label">1. Forma de la torta</label>
+        <div class="pill-row" id="opt-shape">
+          <button data-val="redonda" class="active">Redonda</button>
+          <button data-val="cuadrada">Cuadrada</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Safari Manjar Nuez" data-desc="Bizcocho de chocolate intenso relleno con manjar y nuez. Perfecta para celebraciones infantiles con decoración temática personalizada." data-img="img/torta2.jpg">
-        <img src="img/torta2.jpg" alt="Torta de chocolate con manjar nuez temática safari" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Chocolate</span>
-        <div class="cake-card-overlay">
-          <h3>Safari Manjar Nuez</h3>
-          <p>Chocolate rellena en manjar y nuez con temática personalizada</p>
+
+      <div class="builder-group">
+        <label class="group-label">2. Número de pisos</label>
+        <div class="pill-row" id="opt-tiers">
+          <button data-val="1" class="active">1 piso</button>
+          <button data-val="2">2 pisos</button>
+          <button data-val="3">3 pisos</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Dulzura Oreo" data-desc="Bizcocho esponjoso de vainilla relleno con crema de galleta Oreo. Cobertura en degradé rosa con detalles de corazones y topper decorativo." data-img="img/torta3.jpg">
-        <img src="img/torta3.jpg" alt="Torta de vainilla con crema Oreo" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Vainilla</span>
-        <div class="cake-card-overlay">
-          <h3>Dulzura Oreo</h3>
-          <p>Vainilla rellena con crema Oreo y degradé rosa</p>
+
+      <div class="builder-group">
+        <label class="group-label">3. Tamaño de la base</label>
+        <div class="pill-row" id="opt-size">
+          <button data-val="chica">Chica (10-15p)</button>
+          <button data-val="mediana" class="active">Mediana (15-25p)</button>
+          <button data-val="grande">Grande (25-40p)</button>
+          <button data-val="xl">XL (40-60p)</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Doble Chocolate" data-desc="Dos pisos de puro chocolate rellenos con ganache de chocolate belga. Decoración en degradé rojo y negro con estrellas plateadas." data-img="img/torta4.jpg">
-        <img src="img/torta4.jpg" alt="Torta de chocolate con ganache de chocolate" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Chocolate</span>
-        <div class="cake-card-overlay">
-          <h3>Doble Chocolate</h3>
-          <p>Chocolate rellena con ganache de chocolate, dos pisos</p>
+
+      <div class="builder-group">
+        <label class="group-label">4. Sabor y relleno por piso</label>
+        <div id="tierConfigsHost"></div>
+      </div>
+
+      <div class="builder-group">
+        <label class="group-label">5. Cobertura</label>
+        <div class="pill-row" id="opt-coating">
+          <button data-val="chantilly" class="active">Crema Chantilly</button>
+          <button data-val="fondant">Fondant</button>
+          <button data-val="ganache">Ganache Espejo</button>
+          <button data-val="merengue">Merengue</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Marmoleada Racing" data-desc="Bizcocho marmoleado de vainilla y chocolate relleno con manjar y crema. Textura artística con decoración de carreras y esferas rojas." data-img="img/torta5.jpg">
-        <img src="img/torta5.jpg" alt="Torta marmoleada con manjar crema" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Marmoleada</span>
-        <div class="cake-card-overlay">
-          <h3>Marmoleada Racing</h3>
-          <p>Marmoleada rellena con manjar crema, estilo único</p>
+
+      <div class="builder-group">
+        <label class="group-label">6. Tema de color</label>
+        <div class="theme-row" id="opt-theme">
+          <button class="theme-swatch active" data-val="rosa" style="background:linear-gradient(135deg,#E8B4BC,#C4788A)" title="Rosa Elegante"></button>
+          <button class="theme-swatch" data-val="dorado" style="background:linear-gradient(135deg,#D4A843,#B8860B)" title="Dorado"></button>
+          <button class="theme-swatch" data-val="infantil" style="background:linear-gradient(135deg,#7DD3C0,#FF8FA3)" title="Infantil Colorido"></button>
+          <button class="theme-swatch" data-val="elegante" style="background:linear-gradient(135deg,#5C3D2E,#2B2320)" title="Elegante Blanco/Negro"></button>
+          <button class="theme-swatch" data-val="pastel" style="background:linear-gradient(135deg,#C8E6E0,#F6D6E0)" title="Pastel"></button>
+          <input type="color" id="customColorPicker" value="#C4788A" style="display:none">
+          <button class="custom-color-swatch" id="customColorBtn" title="Elige tu propio color"></button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Red Velvet Glamour" data-desc="Inconfundible red velvet rellena con crema de Oreo. Acabado blanco con detalles en rojo, esferas doradas y perlas que aportan un toque glamoroso." data-img="img/torta6.jpg">
-        <img src="img/torta6.jpg" alt="Torta red velvet con crema Oreo" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Red Velvet</span>
-        <div class="cake-card-overlay">
-          <h3>Red Velvet Glamour</h3>
-          <p>Red velvet rellena con crema Oreo, detalles dorados</p>
+
+      <div class="builder-group">
+        <label class="group-label">7. Decoración extra (elige varias)</label>
+        <div class="pill-row" id="opt-decor">
+          <button data-val="flores">🌸 Flores</button>
+          <button data-val="perlas">🤍 Perlas</button>
+          <button data-val="chocolates">🍫 Chocolates</button>
+          <button data-val="frutas">🍓 Frutas frescas</button>
+          <button data-val="brillo">✨ Brillo comestible</button>
+          <button data-val="macarons">🧁 Macarons</button>
+          <button data-val="topper">🎉 Topper personalizado</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Jardín de Durazno" data-desc="Dos pisos de bizcocho de vainilla rellenos con crema de durazno natural. Decorada con mariposas doradas, flores rosas y perlas comestibles." data-img="img/torta7.jpg">
-        <img src="img/torta7.jpg" alt="Torta de vainilla con crema de durazno" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Vainilla</span>
-        <div class="cake-card-overlay">
-          <h3>Jardín de Durazno</h3>
-          <p>Vainilla rellena con crema de durazno, dos pisos</p>
+
+      <div class="builder-group">
+        <label class="group-label">8. Sección</label>
+        <div class="pill-row" id="opt-category">
+          <button data-val="ninos">Tortas Niños</button>
+          <button data-val="adultos" class="active">Tortas Adultos</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Fiesta Pop" data-desc="Bizcocho de chocolate relleno con suave manjar. Dos pisos vibrantes en fucsia y púrpura con esferas disco plateadas y doradas." data-img="img/torta8.jpg">
-        <img src="img/torta8.jpg" alt="Torta de chocolate con manjar temática musical" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Chocolate</span>
-        <div class="cake-card-overlay">
-          <h3>Fiesta Pop</h3>
-          <p>Chocolate con manjar, dos pisos vibrantes</p>
+
+      <div class="builder-group">
+        <label class="group-label">9. Velas</label>
+        <div class="candles-control">
+          <button type="button" onclick="changeCandles(-1)">−</button>
+          <span id="candlesCount">0</span>
+          <button type="button" onclick="changeCandles(1)">+</button>
         </div>
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Cítrica Aventura" data-desc="Refrescante combinación de bizcocho de vainilla con toque de limón, relleno con manjar y nuez. Dos pisos en azul y rojo estilo cómic." data-img="img/torta9.jpg">
-        <img src="img/torta9.jpg" alt="Torta vainilla limón con manjar nuez" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Vainilla-Limón</span>
-        <div class="cake-card-overlay">
-          <h3>Cítrica Aventura</h3>
-          <p>Vainilla-limón con manjar nuez, dos pisos</p>
-        </div>
+
+      <div class="builder-group">
+        <label class="group-label" for="plaqueText">10. Mensaje en la torta</label>
+        <input type="text" id="plaqueText" maxlength="40" placeholder="Ej: Feliz Cumpleaños Isabella">
       </div>
-      <div class="cake-card reveal" onclick="openLightbox(this)" data-title="Cookies & Cream" data-desc="Bizcocho de chocolate relleno con crema de cookies & cream. Dos pisos en colores vibrantes amarillo, azul y verde con temática gamer." data-img="img/torta10.jpg">
-        <img src="img/torta10.jpg" alt="Torta de chocolate con cookies and cream" class="cake-card-img" loading="lazy">
-        <span class="cake-card-tag">Chocolate</span>
-        <div class="cake-card-overlay">
-          <h3>Cookies & Cream</h3>
-          <p>Chocolate con crema cookies & cream, dos pisos</p>
-        </div>
+
+      <div class="builder-group">
+        <label class="group-label" for="clientName">11. Tu nombre</label>
+        <input type="text" id="clientName" placeholder="¿Cómo te llamas?">
       </div>
+
+      <div class="builder-group">
+        <label class="group-label" for="deliveryDate">12. Fecha deseada de entrega</label>
+        <input type="text" id="deliveryDate" placeholder="Ej: Sábado 20 de septiembre">
+      </div>
+
+      <div class="builder-group">
+        <label class="group-label" for="builderNotes">13. Notas adicionales</label>
+        <textarea id="builderNotes" placeholder="Alergias, temática exacta, referencias, etc."></textarea>
+      </div>
+
+      <div class="builder-summary" id="builderSummary"></div>
+
+      <a href="#" target="_blank" rel="noopener" class="builder-cta" id="builderWhatsappBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.478l4.59-1.472A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.585-5.932-1.606l-.424-.254-2.725.874.863-2.658-.278-.44A9.78 9.78 0 012.182 12c0-5.422 4.396-9.818 9.818-9.818S21.818 6.578 21.818 12s-4.396 9.818-9.818 9.818z"/></svg>
+        Cotizar por WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -591,6 +1037,56 @@ section{padding:80px 24px}
   <div class="footer-line">© 2024 Isa'Cakes — Repostería Artesanal · Santiago, Chile</div>
 </section>
 
+<!-- ADMIN -->
+<button class="admin-fab" id="adminFab" title="Admin" aria-label="Panel de administración">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09A1.65 1.65 0 0015 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+</button>
+
+<div class="admin-modal" id="adminModal" onclick="if(event.target===this)closeAdminModal()">
+  <div class="admin-box">
+    <button class="admin-close" onclick="closeAdminModal()" aria-label="Cerrar">&times;</button>
+
+    <div id="adminLoginView">
+      <h3>Acceso Admin</h3>
+      <p class="admin-sub">Ingresa la contraseña para gestionar la galería.</p>
+      <div class="admin-field">
+        <label for="adminPassword">Contraseña</label>
+        <input type="password" id="adminPassword" autocomplete="current-password">
+      </div>
+      <button class="admin-btn" id="adminLoginBtn" onclick="adminLogin()">Ingresar</button>
+      <p class="admin-msg" id="adminLoginMsg"></p>
+    </div>
+
+    <div id="adminPanelView" style="display:none">
+      <h3>Nueva creación</h3>
+      <p class="admin-sub">Sube 1 foto por trabajo, con su título y descripción.</p>
+      <div class="admin-field">
+        <label for="upTitle">Título</label>
+        <input type="text" id="upTitle" placeholder="Ej: Torta Unicornio Arcoíris">
+      </div>
+      <div class="admin-field">
+        <label for="upDesc">Descripción</label>
+        <textarea id="upDesc" placeholder="Ej: Bizcocho de vainilla relleno con crema y frutas..."></textarea>
+      </div>
+      <div class="admin-field">
+        <label for="upCategory">Sección</label>
+        <select id="upCategory">
+          <option value="ninos">Tortas Niños</option>
+          <option value="adultos">Tortas Adultos</option>
+        </select>
+      </div>
+      <div class="admin-field">
+        <label for="upFile">Foto</label>
+        <input type="file" id="upFile" accept="image/*" onchange="previewUpload(event)">
+        <img id="upPreview" class="admin-preview">
+      </div>
+      <button class="admin-btn" id="adminUploadBtn" onclick="adminUpload()">Subir foto</button>
+      <p class="admin-msg" id="adminUploadMsg"></p>
+      <button class="admin-logout" onclick="adminLogout()">Cerrar sesión de admin</button>
+    </div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox(event)">
@@ -642,6 +1138,715 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox(e)});
 
 // PWA Service Worker
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+
+// ── SUPABASE (galería administrable) ──
+const SB_URL='https://wiuuzsiiaagqldtxfouj.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndpdXV6c2lpYWFncWxkdHhmb3VqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE3MjI1NDcsImV4cCI6MjA5NzI5ODU0N30.hPNrXFz9GIBDMAKMZ3Ao22cVsFoyQO1Ne7eYvHhEF7U';
+
+async function sbRest(path,opts={}){
+  const res=await fetch(SB_URL+path,{
+    ...opts,
+    headers:{
+      'apikey':SB_KEY,
+      'Authorization':'Bearer '+SB_KEY,
+      'Content-Type':'application/json',
+      ...(opts.headers||{})
+    }
+  });
+  const data=await res.json().catch(()=>null);
+  if(!res.ok){
+    const msg=(data&&(data.message||data.error_description||data.error))||'Error de conexión';
+    throw new Error(msg);
+  }
+  return data;
+}
+const sbRpc=(fn,args)=>sbRest('/rest/v1/rpc/'+fn,{method:'POST',body:JSON.stringify(args)});
+
+function adminPw(){return sessionStorage.getItem('isacakes_admin_pw')||''}
+function isAdmin(){return !!adminPw()}
+
+function cakeCardHTML(item){
+  const src=item.image_url?item.image_url:('data:'+item.image_mime+';base64,'+item.image_base64);
+  const otherCat=item.category==='ninos'?'adultos':'ninos';
+  const otherLabel=item.category==='ninos'?'Adultos':'Niños';
+  const adminBar=isAdmin()?`
+    <div class="cake-card-admin-bar" onclick="event.stopPropagation()">
+      <button onclick="moveCreation('${item.id}','${otherCat}')">Mover a ${otherLabel}</button>
+      <button class="danger" onclick="deleteCreation('${item.id}')">Eliminar</button>
+    </div>`:'';
+  return `
+    <div class="cake-card reveal visible" onclick="openLightbox(this)"
+         data-title="${escapeHtml(item.title)}" data-desc="${escapeHtml(item.description||'')}" data-img="${src}">
+      ${adminBar}
+      <img src="${src}" alt="${escapeHtml(item.title)}" class="cake-card-img" loading="lazy">
+      <div class="cake-card-overlay">
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.description||'')}</p>
+      </div>
+    </div>`;
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+let creationsCache=[];
+async function loadCreations(){
+  try{
+    const data=await sbRest('/rest/v1/isacakes_creations?select=*&order=sort_order.asc,created_at.asc');
+    creationsCache=data;
+    renderGrids();
+  }catch(e){
+    document.getElementById('grid-ninos').innerHTML='<p class="gallery-loading">No se pudo cargar la galería.</p>';
+    document.getElementById('grid-adultos').innerHTML='<p class="gallery-loading">No se pudo cargar la galería.</p>';
+  }
+}
+function renderGrids(){
+  const ninos=creationsCache.filter(c=>c.category==='ninos');
+  const adultos=creationsCache.filter(c=>c.category==='adultos');
+  document.getElementById('grid-ninos').innerHTML=ninos.map(cakeCardHTML).join('')||'<p class="gallery-loading">Aún no hay tortas en esta sección.</p>';
+  document.getElementById('grid-adultos').innerHTML=adultos.map(cakeCardHTML).join('')||'<p class="gallery-loading">Aún no hay tortas en esta sección.</p>';
+}
+
+async function moveCreation(id,category){
+  try{
+    await sbRpc('isacakes_admin_move_creation',{p_password:adminPw(),p_id:id,p_category:category});
+    await loadCreations();
+  }catch(e){alert('No se pudo mover: '+e.message)}
+}
+async function deleteCreation(id){
+  if(!confirm('¿Eliminar esta foto? Esta acción no se puede deshacer.'))return;
+  try{
+    await sbRpc('isacakes_admin_delete_creation',{p_password:adminPw(),p_id:id});
+    await loadCreations();
+  }catch(e){alert('No se pudo eliminar: '+e.message)}
+}
+
+// ── ADMIN UI ──
+const adminModal=document.getElementById('adminModal');
+document.getElementById('adminFab').addEventListener('click',openAdminModal);
+function openAdminModal(){
+  adminModal.classList.add('active');
+  document.getElementById('adminLoginMsg').textContent='';
+  if(isAdmin()){
+    document.getElementById('adminLoginView').style.display='none';
+    document.getElementById('adminPanelView').style.display='block';
+  }else{
+    document.getElementById('adminLoginView').style.display='block';
+    document.getElementById('adminPanelView').style.display='none';
+  }
+}
+function closeAdminModal(){adminModal.classList.remove('active')}
+
+async function adminLogin(){
+  const pw=document.getElementById('adminPassword').value;
+  const msg=document.getElementById('adminLoginMsg');
+  const btn=document.getElementById('adminLoginBtn');
+  if(!pw){msg.textContent='Ingresa una contraseña.';msg.className='admin-msg error';return}
+  btn.disabled=true;msg.textContent='Verificando…';msg.className='admin-msg';
+  try{
+    const ok=await sbRpc('isacakes_admin_check_password',{p_password:pw});
+    if(ok){
+      sessionStorage.setItem('isacakes_admin_pw',pw);
+      document.getElementById('adminPassword').value='';
+      document.getElementById('adminLoginView').style.display='none';
+      document.getElementById('adminPanelView').style.display='block';
+      renderGrids();
+    }else{
+      msg.textContent='Contraseña incorrecta.';msg.className='admin-msg error';
+    }
+  }catch(e){
+    msg.textContent='Error de conexión.';msg.className='admin-msg error';
+  }finally{btn.disabled=false}
+}
+function adminLogout(){
+  sessionStorage.removeItem('isacakes_admin_pw');
+  closeAdminModal();
+  renderGrids();
+}
+
+// Compress + preview selected image (canvas resize + JPEG quality)
+let pendingUpload=null;
+function previewUpload(ev){
+  const file=ev.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const maxDim=1100;
+      let w=img.width,h=img.height;
+      if(w>maxDim||h>maxDim){
+        if(w>h){h=Math.round(h*maxDim/w);w=maxDim}
+        else{w=Math.round(w*maxDim/h);h=maxDim}
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl=canvas.toDataURL('image/jpeg',0.75);
+      pendingUpload={base64:dataUrl.split(',')[1],mime:'image/jpeg'};
+      const preview=document.getElementById('upPreview');
+      preview.src=dataUrl;
+      preview.style.display='block';
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function adminUpload(){
+  const title=document.getElementById('upTitle').value.trim();
+  const desc=document.getElementById('upDesc').value.trim();
+  const category=document.getElementById('upCategory').value;
+  const msg=document.getElementById('adminUploadMsg');
+  const btn=document.getElementById('adminUploadBtn');
+  if(!title||!pendingUpload){
+    msg.textContent='Completa el título y selecciona una foto.';msg.className='admin-msg error';return;
+  }
+  btn.disabled=true;msg.textContent='Subiendo…';msg.className='admin-msg';
+  try{
+    await sbRpc('isacakes_admin_add_creation',{
+      p_password:adminPw(),
+      p_title:title,
+      p_description:desc,
+      p_category:category,
+      p_image_base64:pendingUpload.base64,
+      p_image_mime:pendingUpload.mime
+    });
+    msg.textContent='¡Foto publicada!';msg.className='admin-msg ok';
+    document.getElementById('upTitle').value='';
+    document.getElementById('upDesc').value='';
+    document.getElementById('upFile').value='';
+    document.getElementById('upPreview').style.display='none';
+    pendingUpload=null;
+    await loadCreations();
+  }catch(e){
+    msg.textContent=e.message==='contraseña incorrecta'?'Sesión inválida, vuelve a ingresar la contraseña.':'No se pudo subir la foto.';
+    msg.className='admin-msg error';
+    if(e.message==='contraseña incorrecta')sessionStorage.removeItem('isacakes_admin_pw');
+  }finally{btn.disabled=false}
+}
+
+loadCreations();
+
+// ── CAKE BUILDER ──
+const CB_FLAVORS={
+  vainilla:{label:'Vainilla',crumb:'#F5E6C8'},
+  chocolate:{label:'Chocolate',crumb:'#6B4226'},
+  marmoleado:{label:'Marmoleado',crumb:'repeating-linear-gradient(45deg,#F5E6C8 0 4px,#6B4226 4px 8px)'},
+  redvelvet:{label:'Red Velvet',crumb:'#8B1E3F'},
+  limon:{label:'Vainilla-Limón',crumb:'#F5F0A0'}
+};
+const CB_FILLINGS={
+  manjar:{label:'Manjar',color:'#C68E3F'},
+  crema:{label:'Crema Pastelera',color:'#FFF6E0'},
+  ganache:{label:'Ganache Chocolate',color:'#3B1F14'},
+  frutos:{label:'Frutos Rojos',color:'#B23A48'},
+  oreo:{label:'Crema Oreo',color:'#4A4A4A'},
+  durazno:{label:'Durazno',color:'#F2A65A'}
+};
+const CB_THEMES={
+  rosa:{label:'Rosa Elegante',primary:'#E8B4BC',secondary:'#C4788A',accent:'#B8860B'},
+  dorado:{label:'Dorado',primary:'#D4A843',secondary:'#B8860B',accent:'#FFF9F5'},
+  infantil:{label:'Infantil Colorido',primary:'#7DD3C0',secondary:'#FF8FA3',accent:'#FFE066'},
+  elegante:{label:'Elegante Blanco/Negro',primary:'#5C3D2E',secondary:'#2B2320',accent:'#D4A843'},
+  pastel:{label:'Pastel',primary:'#C8E6E0',secondary:'#F6D6E0',accent:'#F2A9C2'}
+};
+const CB_DECOR={
+  flores:{label:'Flores',emoji:'🌸'},
+  perlas:{label:'Perlas comestibles',emoji:'🤍'},
+  chocolates:{label:'Chocolates',emoji:'🍫'},
+  frutas:{label:'Frutas frescas',emoji:'🍓'},
+  brillo:{label:'Brillo comestible',emoji:'✨'},
+  macarons:{label:'Macarons',emoji:'🧁'},
+  topper:{label:'Topper personalizado',emoji:'🎉'}
+};
+const CB_SIZE_LABEL={chica:'Chica (10-15 personas)',mediana:'Mediana (15-25 personas)',grande:'Grande (25-40 personas)',xl:'XL (40-60 personas)'};
+const CB_COATING_LABEL={chantilly:'Crema Chantilly',fondant:'Fondant',ganache:'Ganache Espejo',merengue:'Merengue'};
+
+const cb={
+  shape:'redonda',
+  tiers:1,
+  size:'mediana',
+  tierFlavors:['vainilla'],
+  tierFillings:['manjar'],
+  coating:'chantilly',
+  theme:'rosa',
+  customColor:'#C4788A',
+  useCustomColor:false,
+  decor:new Set(),
+  candles:0,
+  category:'adultos',
+  plaqueText:'',
+  clientName:'',
+  deliveryDate:'',
+  notes:''
+};
+
+function cbEnsureTierArrays(){
+  while(cb.tierFlavors.length<cb.tiers)cb.tierFlavors.push('vainilla');
+  while(cb.tierFillings.length<cb.tiers)cb.tierFillings.push('manjar');
+  cb.tierFlavors.length=cb.tiers;
+  cb.tierFillings.length=cb.tiers;
+}
+
+function renderTierConfigs(){
+  const host=document.getElementById('tierConfigsHost');
+  host.innerHTML='';
+  for(let i=cb.tiers-1;i>=0;i--){
+    const div=document.createElement('div');
+    div.className='tier-config';
+    const flavorOpts=Object.entries(CB_FLAVORS).map(([k,v])=>`<option value="${k}" ${cb.tierFlavors[i]===k?'selected':''}>${v.label}</option>`).join('');
+    const fillingOpts=Object.entries(CB_FILLINGS).map(([k,v])=>`<option value="${k}" ${cb.tierFillings[i]===k?'selected':''}>${v.label}</option>`).join('');
+    div.innerHTML=`
+      <div class="tier-config-title">Piso ${i+1}${cb.tiers>1?(i===0?' (base)':i===cb.tiers-1?' (superior)':''):''}</div>
+      <select data-tier="${i}" data-kind="flavor">${flavorOpts}</select>
+      <select data-tier="${i}" data-kind="filling">${fillingOpts}</select>
+    `;
+    host.appendChild(div);
+  }
+  host.querySelectorAll('select').forEach(sel=>{
+    sel.addEventListener('change',e=>{
+      const idx=+e.target.dataset.tier;
+      if(e.target.dataset.kind==='flavor')cb.tierFlavors[idx]=e.target.value;
+      else cb.tierFillings[idx]=e.target.value;
+      renderCake();
+    });
+  });
+}
+
+function renderCake(){
+  cbEnsureTierArrays();
+
+  const crumb=CB_FLAVORS[cb.tierFlavors[0]].crumb;
+  document.getElementById('ciCrumb').style.background=crumb;
+  document.getElementById('ciFill').style.background=CB_FILLINGS[cb.tierFillings[0]].color;
+
+  document.getElementById('candlesCount').textContent=cb.candles;
+
+  if(window.render3DCake)window.render3DCake();
+
+  renderTierConfigs();
+  renderSummary();
+}
+window.cb=cb;
+window.CB_THEMES=CB_THEMES;
+
+function renderSummary(){
+  const decorList=[...cb.decor].map(k=>CB_DECOR[k].label).join(', ')||'Ninguna';
+  const themeLabel=cb.useCustomColor?'Color personalizado ('+cb.customColor+')':CB_THEMES[cb.theme].label;
+  const tiersDetail=cb.tierFlavors.map((f,i)=>`Piso ${i+1}: ${CB_FLAVORS[f].label} c/ ${CB_FILLINGS[cb.tierFillings[i]].label}`).join(' · ');
+
+  document.getElementById('ciSummaryLine').textContent=
+    `${cb.tiers} piso${cb.tiers>1?'s':''} · ${cb.shape} · ${CB_SIZE_LABEL[cb.size]}`;
+
+  document.getElementById('builderSummary').innerHTML=`
+    <strong>Resumen de tu torta:</strong><br>
+    Forma: ${cb.shape==='redonda'?'Redonda':'Cuadrada'} · Pisos: ${cb.tiers} · Tamaño: ${CB_SIZE_LABEL[cb.size]}<br>
+    ${tiersDetail}<br>
+    Cobertura: ${CB_COATING_LABEL[cb.coating]} · Tema: ${themeLabel}<br>
+    Decoración: ${decorList} · Velas: ${cb.candles} · Sección: ${cb.category==='ninos'?'Niños':'Adultos'}
+    ${cb.plaqueText.trim()?'<br>Mensaje: "'+cb.plaqueText.trim()+'"':''}
+  `;
+
+  const lines=[
+    'Hola! Quiero cotizar esta torta personalizada que armé en la web:',
+    `- Forma: ${cb.shape==='redonda'?'Redonda':'Cuadrada'}`,
+    `- Pisos: ${cb.tiers}`,
+    `- Tamaño: ${CB_SIZE_LABEL[cb.size]}`,
+    `- Detalle por piso: ${tiersDetail}`,
+    `- Cobertura: ${CB_COATING_LABEL[cb.coating]}`,
+    `- Tema de color: ${themeLabel}`,
+    `- Decoración extra: ${decorList}`,
+    `- Velas: ${cb.candles}`,
+    `- Sección: ${cb.category==='ninos'?'Tortas Niños':'Tortas Adultos'}`,
+    cb.plaqueText.trim()?`- Mensaje en la torta: "${cb.plaqueText.trim()}"`:null,
+    cb.clientName.trim()?`- Mi nombre: ${cb.clientName.trim()}`:null,
+    cb.deliveryDate.trim()?`- Fecha deseada: ${cb.deliveryDate.trim()}`:null,
+    cb.notes.trim()?`- Notas: ${cb.notes.trim()}`:null,
+    '¡Gracias!'
+  ].filter(Boolean).join('\n');
+
+  document.getElementById('builderWhatsappBtn').href='https://wa.me/56933263305?text='+encodeURIComponent(lines);
+}
+
+function cbSetupPillGroup(id,onSelect,multi){
+  document.getElementById(id).querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(multi){
+        btn.classList.toggle('active');
+      }else{
+        document.getElementById(id).querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      onSelect(btn.dataset.val,btn);
+    });
+  });
+}
+
+cbSetupPillGroup('opt-shape',v=>{cb.shape=v;renderCake();});
+cbSetupPillGroup('opt-tiers',v=>{cb.tiers=+v;renderCake();});
+cbSetupPillGroup('opt-size',v=>{cb.size=v;renderCake();});
+cbSetupPillGroup('opt-coating',v=>{cb.coating=v;renderCake();});
+cbSetupPillGroup('opt-category',v=>{cb.category=v;renderCake();});
+cbSetupPillGroup('opt-decor',v=>{cb.decor.has(v)?cb.decor.delete(v):cb.decor.add(v);renderCake();},true);
+
+document.getElementById('opt-theme').querySelectorAll('.theme-swatch').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#opt-theme .theme-swatch, #customColorBtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    cb.theme=btn.dataset.val;
+    cb.useCustomColor=false;
+    renderCake();
+  });
+});
+const customColorBtn=document.getElementById('customColorBtn');
+const customColorPicker=document.getElementById('customColorPicker');
+customColorBtn.addEventListener('click',()=>customColorPicker.click());
+customColorPicker.addEventListener('input',e=>{
+  cb.customColor=e.target.value;
+  cb.useCustomColor=true;
+  document.querySelectorAll('#opt-theme .theme-swatch, #customColorBtn').forEach(b=>b.classList.remove('active'));
+  customColorBtn.classList.add('active');
+  customColorBtn.style.background=cb.customColor;
+  renderCake();
+});
+
+function changeCandles(delta){
+  cb.candles=Math.max(0,Math.min(99,cb.candles+delta));
+  renderCake();
+}
+
+['plaqueText','clientName','deliveryDate','builderNotes'].forEach(id=>{
+  document.getElementById(id).addEventListener('input',e=>{
+    const map={plaqueText:'plaqueText',clientName:'clientName',deliveryDate:'deliveryDate',builderNotes:'notes'};
+    cb[map[id]]=e.target.value;
+    renderCake();
+  });
+});
+
+renderCake();
+</script>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/+esm';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js/+esm';
+
+const THEME_COLORS={
+  rosa:{primary:'#E8B4BC',secondary:'#C4788A'},
+  dorado:{primary:'#D4A843',secondary:'#B8860B'},
+  infantil:{primary:'#7DD3C0',secondary:'#FF8FA3'},
+  elegante:{primary:'#5C3D2E',secondary:'#2B2320'},
+  pastel:{primary:'#C8E6E0',secondary:'#F6D6E0'}
+};
+const SIZE_SCALE={chica:0.82,mediana:1,grande:1.18,xl:1.34};
+const TIER_HEIGHT={1:1.55,2:0.95,3:0.72};
+
+const mount=document.getElementById('cakeIllustration');
+const W=260,H=300;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(35,W/H,0.1,100);
+camera.position.set(0,3.1,6.4);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(W,H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+document.getElementById('cake3dLoading').remove();
+mount.appendChild(renderer.domElement);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.enableDamping=true;
+controls.dampingFactor=0.08;
+controls.enablePan=false;
+controls.enableZoom=true;
+controls.minDistance=4.2;
+controls.maxDistance=8.5;
+controls.minPolarAngle=Math.PI*0.22;
+controls.maxPolarAngle=Math.PI*0.52;
+controls.target.set(0,1.1,0);
+controls.autoRotate=true;
+controls.autoRotateSpeed=2.4;
+let idleTimer=null;
+controls.addEventListener('start',()=>{
+  controls.autoRotate=false;
+  clearTimeout(idleTimer);
+});
+controls.addEventListener('end',()=>{
+  idleTimer=setTimeout(()=>{controls.autoRotate=true},2500);
+});
+
+scene.add(new THREE.AmbientLight(0xfff3e8,0.75));
+const keyLight=new THREE.DirectionalLight(0xffffff,1);
+keyLight.position.set(3,6,4);
+scene.add(keyLight);
+const fillLight=new THREE.DirectionalLight(0xffe4ec,0.4);
+fillLight.position.set(-4,2,-3);
+scene.add(fillLight);
+
+const plate=new THREE.Mesh(
+  new THREE.CylinderGeometry(2.2,2.3,0.12,48),
+  new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.3,metalness:0.15})
+);
+scene.add(plate);
+
+let cakeGroup=new THREE.Group();
+scene.add(cakeGroup);
+let flickerMeshes=[]; // {mesh, phase, type:'flame'|'glitter'}
+
+function roundRectPath(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function wrapText(ctx,text,cx,cy,maxWidth,lineHeight){
+  const words=text.split(' ');
+  let line='';const lines=[];
+  for(const w of words){
+    const test=line+w+' ';
+    if(ctx.measureText(test).width>maxWidth && line){lines.push(line.trim());line=w+' ';}
+    else line=test;
+  }
+  lines.push(line.trim());
+  const startY=cy-(lines.length-1)*lineHeight/2;
+  lines.forEach((l,i)=>ctx.fillText(l,cx,startY+i*lineHeight));
+}
+function textSprite(text){
+  const canvas=document.createElement('canvas');
+  canvas.width=512;canvas.height=176;
+  const ctx=canvas.getContext('2d');
+  ctx.fillStyle='#ffffff';
+  roundRectPath(ctx,8,8,496,160,22);
+  ctx.fill();
+  ctx.fillStyle='#5C3D2E';
+  ctx.font='600 42px "Playfair Display", Georgia, serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  wrapText(ctx,text,256,88,460,48);
+  const tex=new THREE.CanvasTexture(canvas);
+  tex.colorSpace=THREE.SRGBColorSpace;
+  const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
+  sprite.scale.set(2.3,0.79,1);
+  return sprite;
+}
+
+function makeFlower(color){
+  const g=new THREE.Group();
+  const petalMat=new THREE.MeshStandardMaterial({color,roughness:0.5});
+  for(let i=0;i<6;i++){
+    const petal=new THREE.Mesh(new THREE.SphereGeometry(0.09,10,8),petalMat);
+    const ang=(i/6)*Math.PI*2;
+    petal.position.set(Math.cos(ang)*0.1,0,Math.sin(ang)*0.1);
+    petal.scale.set(1,0.5,1);
+    g.add(petal);
+  }
+  const center=new THREE.Mesh(new THREE.SphereGeometry(0.06,10,8),new THREE.MeshStandardMaterial({color:0xF4D03F,roughness:0.4}));
+  g.add(center);
+  return g;
+}
+function makeFruit(){
+  const g=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.SphereGeometry(0.11,12,10),new THREE.MeshStandardMaterial({color:0xE23B4E,roughness:0.4}));
+  body.scale.set(1,1.2,1);
+  g.add(body);
+  const leaf=new THREE.Mesh(new THREE.ConeGeometry(0.05,0.07,6),new THREE.MeshStandardMaterial({color:0x3E7D3A,roughness:0.6}));
+  leaf.position.y=0.15;
+  g.add(leaf);
+  return g;
+}
+function makeChocolate(){
+  return new THREE.Mesh(new THREE.DodecahedronGeometry(0.08),new THREE.MeshStandardMaterial({color:0x3B1F14,roughness:0.25,metalness:0.15}));
+}
+function makePearl(){
+  return new THREE.Mesh(new THREE.SphereGeometry(0.06,12,10),new THREE.MeshStandardMaterial({color:0xFFFDF6,roughness:0.15,metalness:0.35}));
+}
+function makeMacaron(color){
+  const g=new THREE.Group();
+  const shellMat=new THREE.MeshStandardMaterial({color,roughness:0.5});
+  const top=new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.06,20),shellMat);
+  top.position.y=0.05;
+  const bottom=new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.11,0.06,20),shellMat);
+  bottom.position.y=-0.05;
+  const cream=new THREE.Mesh(new THREE.CylinderGeometry(0.115,0.115,0.05,20),new THREE.MeshStandardMaterial({color:0xFFF6E8,roughness:0.6}));
+  g.add(top,bottom,cream);
+  return g;
+}
+function makeGlitter(){
+  return new THREE.Mesh(new THREE.OctahedronGeometry(0.04),new THREE.MeshStandardMaterial({color:0xF4D03F,emissive:0xF4D03F,emissiveIntensity:0.6,roughness:0.2,metalness:0.6}));
+}
+function makeToppFlag(text){
+  const g=new THREE.Group();
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.55,8),new THREE.MeshStandardMaterial({color:0xB8860B,metalness:0.4,roughness:0.3}));
+  pole.position.y=0.27;
+  g.add(pole);
+  const flag=textSprite(text||'¡Celebremos!');
+  flag.scale.set(0.9,0.32,1);
+  flag.position.set(0.42,0.48,0);
+  g.add(flag);
+  return g;
+}
+
+window.render3DCake=function(){
+  const cb=window.cb;
+  scene.remove(cakeGroup);
+  cakeGroup=new THREE.Group();
+  flickerMeshes=[];
+
+  const sizeScale=SIZE_SCALE[cb.size];
+  const heightPer=TIER_HEIGHT[cb.tiers];
+  const isSquare=cb.shape==='cuadrada';
+  const colors=cb.useCustomColor?{primary:cb.customColor,secondary:cb.customColor}:THEME_COLORS[cb.theme];
+  const primary=new THREE.Color(colors.primary);
+  const secondary=new THREE.Color(colors.secondary);
+
+  let roughness=0.5,metalness=0.02;
+  if(cb.coating==='fondant'){roughness=0.75;metalness=0;}
+  else if(cb.coating==='ganache'){roughness=0.15;metalness=0.25;}
+  else if(cb.coating==='merengue'){roughness=0.85;metalness=0;}
+
+  let y=0.08,topRadius=1.35*sizeScale,topY=0;
+  for(let i=0;i<cb.tiers;i++){
+    const radius=1.35*sizeScale*Math.pow(0.8,i);
+    const h=heightPer;
+    const sideMat=new THREE.MeshStandardMaterial({color:primary,roughness,metalness});
+    const topMat=new THREE.MeshStandardMaterial({color:secondary,roughness,metalness});
+    let mesh;
+    if(isSquare){
+      const geo=new THREE.BoxGeometry(radius*1.7,h,radius*1.7);
+      mesh=new THREE.Mesh(geo,[sideMat,sideMat,topMat,sideMat,sideMat,sideMat]);
+    }else{
+      const geo=new THREE.CylinderGeometry(radius,radius*1.02,h,40);
+      mesh=new THREE.Mesh(geo,[sideMat,topMat,sideMat]);
+    }
+    mesh.position.y=y+h/2;
+    cakeGroup.add(mesh);
+
+    if(cb.coating==='merengue'){
+      const peakCount=Math.round(9*sizeScale*Math.pow(0.85,i))+4;
+      for(let p=0;p<peakCount;p++){
+        const ang=(p/peakCount)*Math.PI*2;
+        const pr=radius*0.9;
+        const peak=new THREE.Mesh(new THREE.ConeGeometry(radius*0.1,radius*0.18,8),topMat);
+        peak.position.set(Math.cos(ang)*pr,y+h+radius*0.06,Math.sin(ang)*pr);
+        cakeGroup.add(peak);
+      }
+    }
+    if(cb.coating==='ganache' && i<cb.tiers){
+      const dripCount=Math.round(10*sizeScale*Math.pow(0.85,i));
+      for(let d=0;d<dripCount;d++){
+        const ang=(d/dripCount)*Math.PI*2;
+        const dr=isSquare?radius*0.85:radius;
+        const dripLen=0.1+Math.random()*0.12;
+        const drip=new THREE.Mesh(new THREE.CapsuleGeometry(0.035,dripLen,4,8),new THREE.MeshStandardMaterial({color:secondary,roughness:0.15,metalness:0.25}));
+        drip.position.set(Math.cos(ang)*dr,y+h/2-dripLen/2,Math.sin(ang)*dr);
+        cakeGroup.add(drip);
+      }
+    }
+
+    y+=h;
+    topRadius=radius;
+  }
+  topY=y;
+
+  const decorArr=[...cb.decor];
+  const petalColor=cb.useCustomColor?new THREE.Color(cb.customColor):secondary;
+  decorArr.forEach((key,idx)=>{
+    const baseAng=idx*1.7;
+    if(key==='flores'){
+      for(let c=0;c<4;c++){
+        const ang=baseAng+c*(Math.PI*2/4);
+        const flower=makeFlower(c%2===0?0xFF8FA3:0xFFFFFF);
+        flower.position.set(Math.cos(ang)*topRadius*0.75,topY+0.03,Math.sin(ang)*topRadius*0.75);
+        cakeGroup.add(flower);
+      }
+    }else if(key==='frutas'){
+      for(let c=0;c<5;c++){
+        const ang=baseAng+c*(Math.PI*2/5);
+        const fruit=makeFruit();
+        fruit.position.set(Math.cos(ang)*topRadius*0.7,topY+0.1,Math.sin(ang)*topRadius*0.7);
+        cakeGroup.add(fruit);
+      }
+    }else if(key==='chocolates'){
+      for(let c=0;c<6;c++){
+        const ang=baseAng+c*(Math.PI*2/6);
+        const choc=makeChocolate();
+        choc.position.set(Math.cos(ang)*topRadius*0.65,topY+0.08,Math.sin(ang)*topRadius*0.65);
+        cakeGroup.add(choc);
+      }
+    }else if(key==='perlas'){
+      for(let c=0;c<10;c++){
+        const ang=baseAng+c*(Math.PI*2/10);
+        const pearl=makePearl();
+        pearl.position.set(Math.cos(ang)*topRadius*0.92,topY+0.03,Math.sin(ang)*topRadius*0.92);
+        cakeGroup.add(pearl);
+      }
+    }else if(key==='macarons'){
+      const macColors=[0xF6C7D9,0xB7E4D8,0xE8D6F0];
+      for(let c=0;c<3;c++){
+        const ang=baseAng+c*(Math.PI*2/3);
+        const mac=makeMacaron(macColors[c%macColors.length]);
+        mac.position.set(Math.cos(ang)*topRadius*0.6,topY+0.1,Math.sin(ang)*topRadius*0.6);
+        cakeGroup.add(mac);
+      }
+    }else if(key==='brillo'){
+      for(let c=0;c<14;c++){
+        const ang=Math.random()*Math.PI*2;
+        const r=Math.random()*topRadius*0.85;
+        const glit=makeGlitter();
+        glit.position.set(Math.cos(ang)*r,topY+0.02+Math.random()*0.05,Math.sin(ang)*r);
+        cakeGroup.add(glit);
+        flickerMeshes.push({mesh:glit,phase:Math.random()*10,type:'glitter'});
+      }
+    }else if(key==='topper'){
+      const flag=makeToppFlag(cb.plaqueText.trim());
+      flag.position.set(0,topY,0);
+      cakeGroup.add(flag);
+    }
+  });
+
+  const candleCount=Math.min(cb.candles,12);
+  for(let i=0;i<candleCount;i++){
+    const ang=(i/candleCount)*Math.PI*2;
+    const r=topRadius*0.42;
+    const body=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.32,10),new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.4}));
+    body.position.set(Math.cos(ang)*r,topY+0.16,Math.sin(ang)*r);
+    cakeGroup.add(body);
+    const flame=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.11,8),new THREE.MeshStandardMaterial({color:0xffb347,emissive:0xff8c00,emissiveIntensity:1.2}));
+    flame.position.set(Math.cos(ang)*r,topY+0.37,Math.sin(ang)*r);
+    cakeGroup.add(flame);
+    flickerMeshes.push({mesh:flame,phase:Math.random()*10,type:'flame'});
+  }
+
+  if(!cb.decor.has('topper')){
+    const plaqueMsg=cb.plaqueText.trim()||'Tu mensaje aquí';
+    const plaque=textSprite(plaqueMsg);
+    plaque.position.set(0,topY+0.55,topRadius+0.05);
+    cakeGroup.add(plaque);
+  }
+
+  scene.add(cakeGroup);
+};
+
+function animate(t){
+  requestAnimationFrame(animate);
+  controls.update();
+  flickerMeshes.forEach(f=>{
+    if(f.type==='flame'){
+      const s=1+Math.sin(t*0.01+f.phase)*0.12;
+      f.mesh.scale.set(s,1+Math.sin(t*0.013+f.phase)*0.18,s);
+    }else if(f.type==='glitter'){
+      f.mesh.material.emissiveIntensity=0.4+Math.abs(Math.sin(t*0.004+f.phase))*0.9;
+    }
+  });
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(animate);
+
+window.render3DCake();
 </script>
 </body>
 </html>
