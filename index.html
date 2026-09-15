@@ -36,6 +36,7 @@ body{
   background:var(--cream);
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
+  touch-action:manipulation;
 }
 
 /* ── NAV ── */
@@ -401,12 +402,23 @@ section{padding:80px 24px}
   padding:8px 10px;border-radius:8px;border:1px solid rgba(92,61,46,0.18);
   font-size:.8rem;background:#fff;color:var(--text);margin-right:8px;margin-bottom:6px;
 }
+.custom-color-wrap{
+  position:relative;width:40px;height:40px;
+  border-radius:50%;flex-shrink:0;
+}
 .custom-color-swatch{
-  width:40px;height:40px;border-radius:50%;cursor:pointer;
+  position:absolute;inset:0;width:100%;height:100%;
+  border-radius:50%;cursor:pointer;
   border:3px solid transparent;padding:0;
   background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
+  pointer-events:none;
 }
 .custom-color-swatch.active{border-color:var(--brown);transform:scale(1.1)}
+.custom-color-wrap input[type=color]{
+  position:absolute;inset:0;width:100%;height:100%;
+  opacity:0;border:none;padding:0;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+}
 .candles-control{display:flex;align-items:center;gap:12px}
 .candles-control button{
   width:34px;height:34px;border-radius:50%;border:1px solid rgba(92,61,46,0.2);
@@ -913,8 +925,10 @@ section{padding:80px 24px}
           <button class="theme-swatch" data-val="infantil" style="background:linear-gradient(135deg,#7DD3C0,#FF8FA3)" title="Infantil Colorido"></button>
           <button class="theme-swatch" data-val="elegante" style="background:linear-gradient(135deg,#5C3D2E,#2B2320)" title="Elegante Blanco/Negro"></button>
           <button class="theme-swatch" data-val="pastel" style="background:linear-gradient(135deg,#C8E6E0,#F6D6E0)" title="Pastel"></button>
-          <input type="color" id="customColorPicker" value="#C4788A" style="display:none">
-          <button class="custom-color-swatch" id="customColorBtn" title="Elige tu propio color"></button>
+          <div class="custom-color-wrap">
+            <button class="custom-color-swatch" id="customColorBtn" title="Elige tu propio color" tabindex="-1"></button>
+            <input type="color" id="customColorPicker" value="#C4788A" aria-label="Elige tu propio color">
+          </div>
         </div>
       </div>
 
@@ -927,6 +941,7 @@ section{padding:80px 24px}
           <button data-val="frutas">🍓 Frutas frescas</button>
           <button data-val="brillo">✨ Brillo comestible</button>
           <button data-val="macarons">🧁 Macarons</button>
+          <button data-val="munecos">🧍 Muñecos/Personajes</button>
           <button data-val="topper">🎉 Topper personalizado</button>
         </div>
       </div>
@@ -1365,6 +1380,7 @@ const CB_DECOR={
   frutas:{label:'Frutas frescas',emoji:'🍓'},
   brillo:{label:'Brillo comestible',emoji:'✨'},
   macarons:{label:'Macarons',emoji:'🧁'},
+  munecos:{label:'Muñecos/Personajes',emoji:'🧍'},
   topper:{label:'Topper personalizado',emoji:'🎉'}
 };
 const CB_SIZE_LABEL={chica:'Chica (10-15 personas)',mediana:'Mediana (15-25 personas)',grande:'Grande (25-40 personas)',xl:'XL (40-60 personas)'};
@@ -1508,7 +1524,6 @@ document.getElementById('opt-theme').querySelectorAll('.theme-swatch').forEach(b
 });
 const customColorBtn=document.getElementById('customColorBtn');
 const customColorPicker=document.getElementById('customColorPicker');
-customColorBtn.addEventListener('click',()=>customColorPicker.click());
 customColorPicker.addEventListener('input',e=>{
   cb.customColor=e.target.value;
   cb.useCustomColor=true;
@@ -1685,6 +1700,42 @@ function makeMacaron(color){
 function makeGlitter(){
   return new THREE.Mesh(new THREE.OctahedronGeometry(0.04),new THREE.MeshStandardMaterial({color:0xF4D03F,emissive:0xF4D03F,emissiveIntensity:0.6,roughness:0.2,metalness:0.6}));
 }
+function makeChibi(outfitColor,hairColor){
+  const g=new THREE.Group();
+  const skinMat=new THREE.MeshStandardMaterial({color:0xFFDBAC,roughness:0.55});
+  const outfitMat=new THREE.MeshStandardMaterial({color:outfitColor,roughness:0.55});
+  const hairMat=new THREE.MeshStandardMaterial({color:hairColor,roughness:0.5});
+
+  const head=new THREE.Mesh(new THREE.SphereGeometry(0.075,16,14),skinMat);
+  head.position.y=0.26;
+  g.add(head);
+
+  const hair=new THREE.Mesh(new THREE.SphereGeometry(0.08,14,12,0,Math.PI*2,0,Math.PI*0.65),hairMat);
+  hair.position.y=0.29;
+  g.add(hair);
+
+  const body=new THREE.Mesh(new THREE.CapsuleGeometry(0.055,0.12,4,10),outfitMat);
+  body.position.y=0.12;
+  g.add(body);
+
+  const armGeo=new THREE.CapsuleGeometry(0.018,0.09,4,6);
+  const armL=new THREE.Mesh(armGeo,outfitMat);
+  armL.position.set(-0.07,0.12,0);
+  armL.rotation.z=0.35;
+  const armR=new THREE.Mesh(armGeo,outfitMat);
+  armR.position.set(0.07,0.12,0);
+  armR.rotation.z=-0.35;
+  g.add(armL,armR);
+
+  const legGeo=new THREE.CylinderGeometry(0.022,0.022,0.09,8);
+  const legL=new THREE.Mesh(legGeo,new THREE.MeshStandardMaterial({color:0x5C3D2E,roughness:0.6}));
+  legL.position.set(-0.028,0.02,0);
+  const legR=legL.clone();
+  legR.position.x=0.028;
+  g.add(legL,legR);
+
+  return g;
+}
 function makeToppFlag(text){
   const g=new THREE.Group();
   const pole=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.55,8),new THREE.MeshStandardMaterial({color:0xB8860B,metalness:0.4,roughness:0.3}));
@@ -1799,6 +1850,17 @@ window.render3DCake=function(){
         const mac=makeMacaron(macColors[c%macColors.length]);
         mac.position.set(Math.cos(ang)*topRadius*0.6,topY+0.1,Math.sin(ang)*topRadius*0.6);
         cakeGroup.add(mac);
+      }
+    }else if(key==='munecos'){
+      const outfits=[0xE8536B,0x3E8FB0,0xF4B942];
+      const hairs=[0x2B2320,0x8B4A2F,0xC48A5A];
+      const chibiCount=Math.min(3,cb.tiers+1);
+      for(let c=0;c<chibiCount;c++){
+        const ang=baseAng+c*(Math.PI*2/chibiCount);
+        const chibi=makeChibi(outfits[c%outfits.length],hairs[c%hairs.length]);
+        chibi.position.set(Math.cos(ang)*topRadius*0.5,topY,Math.sin(ang)*topRadius*0.5);
+        chibi.rotation.y=-ang+Math.PI/2;
+        cakeGroup.add(chibi);
       }
     }else if(key==='brillo'){
       for(let c=0;c<14;c++){
