@@ -497,6 +497,7 @@ section{padding:80px 24px}
 }
 .builder-cta:hover{transform:translateY(-2px)}
 .builder-cta svg{width:18px;height:18px;fill:currentColor}
+.builder-share-note{font-size:.78rem;color:var(--text-light);margin-top:10px}
 @media(max-width:860px){
   .builder-wrap{grid-template-columns:1fr}
   .builder-preview-col{position:static}
@@ -683,7 +684,7 @@ section{padding:80px 24px}
   background:var(--white);
   border-radius:20px;
   padding:32px;
-  width:100%;max-width:440px;
+  width:100%;max-width:520px;
   max-height:88vh;overflow-y:auto;
   box-shadow:0 24px 80px rgba(0,0,0,0.3);
   position:relative;
@@ -727,6 +728,48 @@ section{padding:80px 24px}
   margin-top:18px;background:none;border:none;
   color:var(--text-light);font-size:.8rem;text-decoration:underline;cursor:pointer;
 }
+.admin-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid rgba(92,61,46,0.12);padding-bottom:12px}
+.admin-tab{
+  border:none;background:var(--cream);color:var(--text-light);
+  padding:8px 16px;border-radius:20px;font-size:.82rem;font-weight:600;cursor:pointer;
+}
+.admin-tab.active{background:var(--rose);color:#fff}
+.admin-search{
+  width:100%;padding:9px 13px;margin-bottom:14px;
+  border:1px solid rgba(92,61,46,0.18);border-radius:10px;
+  font-family:inherit;font-size:.85rem;background:var(--cream);color:var(--text);
+}
+.admin-manage-empty{font-size:.85rem;color:var(--text-light);text-align:center;padding:20px 0}
+.admin-manage-item{
+  display:flex;gap:12px;
+  border:1px solid rgba(92,61,46,0.15);border-radius:14px;
+  padding:12px;margin-bottom:12px;background:var(--cream);
+}
+.admin-manage-item img{
+  width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0;
+}
+.admin-manage-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.admin-manage-fields input[type=text],
+.admin-manage-fields textarea,
+.admin-manage-fields select{
+  width:100%;padding:7px 10px;font-size:.78rem;
+  border:1px solid rgba(92,61,46,0.18);border-radius:8px;
+  background:#fff;color:var(--text);font-family:inherit;
+}
+.admin-manage-fields textarea{min-height:44px;resize:vertical}
+.admin-manage-row2{display:flex;gap:6px}
+.admin-manage-row2 select{flex:1}
+.admin-manage-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:2px}
+.admin-manage-actions button{
+  border:none;border-radius:14px;font-size:.72rem;font-weight:600;
+  padding:6px 12px;cursor:pointer;
+}
+.am-save{background:var(--rose);color:#fff}
+.am-save:hover{background:var(--brown)}
+.am-delete{background:transparent;color:#b3261e;border:1px solid #b3261e33!important}
+.am-delete:hover{background:#b3261e;color:#fff}
+.am-status{font-size:.72rem;color:#1e7d32}
+.am-status.error{color:#b3261e}
 .admin-preview{
   width:100%;max-height:180px;object-fit:contain;
   border-radius:12px;margin-top:10px;display:none;
@@ -989,6 +1032,7 @@ section{padding:80px 24px}
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.478l4.59-1.472A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.585-5.932-1.606l-.424-.254-2.725.874.863-2.658-.278-.44A9.78 9.78 0 012.182 12c0-5.422 4.396-9.818 9.818-9.818S21.818 6.578 21.818 12s-4.396 9.818-9.818 9.818z"/></svg>
         Cotizar por WhatsApp
       </a>
+      <p class="builder-share-note" id="builderShareNote"></p>
     </div>
   </div>
 </section>
@@ -1080,30 +1124,44 @@ section{padding:80px 24px}
     </div>
 
     <div id="adminPanelView" style="display:none">
-      <h3>Nueva creación</h3>
-      <p class="admin-sub">Sube 1 foto por trabajo, con su título y descripción.</p>
-      <div class="admin-field">
-        <label for="upTitle">Título</label>
-        <input type="text" id="upTitle" placeholder="Ej: Torta Unicornio Arcoíris">
+      <h3>Panel de administración</h3>
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="manage" onclick="switchAdminTab('manage')">Gestionar (<span id="adminCount">0</span>)</button>
+        <button class="admin-tab" data-tab="upload" onclick="switchAdminTab('upload')">+ Subir nueva</button>
       </div>
-      <div class="admin-field">
-        <label for="upDesc">Descripción</label>
-        <textarea id="upDesc" placeholder="Ej: Bizcocho de vainilla relleno con crema y frutas..."></textarea>
+
+      <div id="adminTabManage">
+        <p class="admin-sub">Edita título, descripción, sección, o elimina cualquier torta.</p>
+        <input type="text" id="adminSearch" placeholder="Buscar por título…" class="admin-search">
+        <div id="adminManageList"></div>
       </div>
-      <div class="admin-field">
-        <label for="upCategory">Sección</label>
-        <select id="upCategory">
-          <option value="ninos">Tortas Niños</option>
-          <option value="adultos">Tortas Adultos</option>
-        </select>
+
+      <div id="adminTabUpload" style="display:none">
+        <p class="admin-sub">Sube 1 foto por trabajo, con su título y descripción.</p>
+        <div class="admin-field">
+          <label for="upTitle">Título</label>
+          <input type="text" id="upTitle" placeholder="Ej: Torta Unicornio Arcoíris">
+        </div>
+        <div class="admin-field">
+          <label for="upDesc">Descripción</label>
+          <textarea id="upDesc" placeholder="Ej: Bizcocho de vainilla relleno con crema y frutas..."></textarea>
+        </div>
+        <div class="admin-field">
+          <label for="upCategory">Sección</label>
+          <select id="upCategory">
+            <option value="ninos">Tortas Niños</option>
+            <option value="adultos">Tortas Adultos</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label for="upFile">Foto</label>
+          <input type="file" id="upFile" accept="image/*" onchange="previewUpload(event)">
+          <img id="upPreview" class="admin-preview">
+        </div>
+        <button class="admin-btn" id="adminUploadBtn" onclick="adminUpload()">Subir foto</button>
+        <p class="admin-msg" id="adminUploadMsg"></p>
       </div>
-      <div class="admin-field">
-        <label for="upFile">Foto</label>
-        <input type="file" id="upFile" accept="image/*" onchange="previewUpload(event)">
-        <img id="upPreview" class="admin-preview">
-      </div>
-      <button class="admin-btn" id="adminUploadBtn" onclick="adminUpload()">Subir foto</button>
-      <p class="admin-msg" id="adminUploadMsg"></p>
+
       <button class="admin-logout" onclick="adminLogout()">Cerrar sesión de admin</button>
     </div>
   </div>
@@ -1217,6 +1275,7 @@ async function loadCreations(){
     const data=await sbRest('/rest/v1/isacakes_creations?select=*&order=sort_order.asc,created_at.asc');
     creationsCache=data;
     renderGrids();
+    if(isAdmin())renderAdminManageList();
   }catch(e){
     document.getElementById('grid-ninos').innerHTML='<p class="gallery-loading">No se pudo cargar la galería.</p>';
     document.getElementById('grid-adultos').innerHTML='<p class="gallery-loading">No se pudo cargar la galería.</p>';
@@ -1243,6 +1302,92 @@ async function deleteCreation(id){
   }catch(e){alert('No se pudo eliminar: '+e.message)}
 }
 
+// ── ADMIN: gestión de creaciones existentes ──
+function manageItemHTML(item){
+  const src=item.image_url?item.image_url:('data:'+item.image_mime+';base64,'+item.image_base64);
+  return `
+    <div class="admin-manage-item" data-id="${item.id}">
+      <img src="${src}" alt="">
+      <div class="admin-manage-fields">
+        <input type="text" class="am-title" value="${escapeHtml(item.title)}" placeholder="Título">
+        <textarea class="am-desc" placeholder="Descripción">${escapeHtml(item.description||'')}</textarea>
+        <div class="admin-manage-row2">
+          <select class="am-category">
+            <option value="ninos" ${item.category==='ninos'?'selected':''}>Tortas Niños</option>
+            <option value="adultos" ${item.category==='adultos'?'selected':''}>Tortas Adultos</option>
+          </select>
+        </div>
+        <div class="admin-manage-actions">
+          <button class="am-save">Guardar cambios</button>
+          <button class="am-delete">Eliminar</button>
+          <span class="am-status"></span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAdminManageList(){
+  const list=document.getElementById('adminManageList');
+  if(!list)return;
+  document.getElementById('adminCount').textContent=creationsCache.length;
+  const term=(document.getElementById('adminSearch')?.value||'').trim().toLowerCase();
+  const items=term?creationsCache.filter(c=>c.title.toLowerCase().includes(term)):creationsCache;
+  list.innerHTML=items.map(manageItemHTML).join('')||'<p class="admin-manage-empty">No hay creaciones que coincidan.</p>';
+}
+
+document.addEventListener('input',e=>{
+  if(e.target.id==='adminSearch')renderAdminManageList();
+});
+
+document.addEventListener('click',async e=>{
+  const row=e.target.closest('.admin-manage-item');
+  if(!row)return;
+  const id=row.dataset.id;
+
+  if(e.target.classList.contains('am-save')){
+    const status=row.querySelector('.am-status');
+    const title=row.querySelector('.am-title').value.trim();
+    const description=row.querySelector('.am-desc').value.trim();
+    const category=row.querySelector('.am-category').value;
+    if(!title){status.textContent='El título no puede estar vacío.';status.className='am-status error';return}
+    e.target.disabled=true;
+    status.textContent='Guardando…';status.className='am-status';
+    try{
+      await sbRpc('isacakes_admin_update_creation',{p_password:adminPw(),p_id:id,p_title:title,p_description:description});
+      const current=creationsCache.find(c=>c.id===id);
+      if(current && current.category!==category){
+        await sbRpc('isacakes_admin_move_creation',{p_password:adminPw(),p_id:id,p_category:category});
+      }
+      await loadCreations();
+      const refreshed=document.querySelector(`.admin-manage-item[data-id="${id}"] .am-status`);
+      if(refreshed){refreshed.textContent='¡Guardado!';refreshed.className='am-status';}
+    }catch(err){
+      status.textContent='Error: '+err.message;status.className='am-status error';
+    }finally{
+      e.target.disabled=false;
+    }
+  }
+
+  if(e.target.classList.contains('am-delete')){
+    if(!confirm('¿Eliminar esta foto? Esta acción no se puede deshacer.'))return;
+    e.target.disabled=true;
+    try{
+      await sbRpc('isacakes_admin_delete_creation',{p_password:adminPw(),p_id:id});
+      await loadCreations();
+    }catch(err){
+      alert('No se pudo eliminar: '+err.message);
+      e.target.disabled=false;
+    }
+  }
+});
+
+function switchAdminTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.getElementById('adminTabManage').style.display=tab==='manage'?'block':'none';
+  document.getElementById('adminTabUpload').style.display=tab==='upload'?'block':'none';
+  if(tab==='manage')renderAdminManageList();
+}
+
 // ── ADMIN UI ──
 const adminModal=document.getElementById('adminModal');
 document.getElementById('adminFab').addEventListener('click',openAdminModal);
@@ -1252,6 +1397,7 @@ function openAdminModal(){
   if(isAdmin()){
     document.getElementById('adminLoginView').style.display='none';
     document.getElementById('adminPanelView').style.display='block';
+    switchAdminTab('manage');
   }else{
     document.getElementById('adminLoginView').style.display='block';
     document.getElementById('adminPanelView').style.display='none';
@@ -1273,6 +1419,7 @@ async function adminLogin(){
       document.getElementById('adminLoginView').style.display='none';
       document.getElementById('adminPanelView').style.display='block';
       renderGrids();
+      switchAdminTab('manage');
     }else{
       msg.textContent='Contraseña incorrecta.';msg.className='admin-msg error';
     }
@@ -1385,6 +1532,7 @@ const CB_DECOR={
 };
 const CB_SIZE_LABEL={chica:'Chica (10-15 personas)',mediana:'Mediana (15-25 personas)',grande:'Grande (25-40 personas)',xl:'XL (40-60 personas)'};
 const CB_COATING_LABEL={chantilly:'Crema Chantilly',fondant:'Fondant',ganache:'Ganache Espejo',merengue:'Merengue'};
+let waMessageText='';
 
 const cb={
   shape:'redonda',
@@ -1486,9 +1634,11 @@ function renderSummary(){
     cb.clientName.trim()?`- Mi nombre: ${cb.clientName.trim()}`:null,
     cb.deliveryDate.trim()?`- Fecha deseada: ${cb.deliveryDate.trim()}`:null,
     cb.notes.trim()?`- Notas: ${cb.notes.trim()}`:null,
+    '(Adjunto una imagen de cómo la armé)',
     '¡Gracias!'
   ].filter(Boolean).join('\n');
 
+  waMessageText=lines;
   document.getElementById('builderWhatsappBtn').href='https://wa.me/56933263305?text='+encodeURIComponent(lines);
 }
 
@@ -1547,6 +1697,43 @@ function changeCandles(delta){
 });
 
 renderCake();
+
+// Share/download the 3D cake image alongside the WhatsApp quote request
+document.getElementById('builderWhatsappBtn').addEventListener('click',async(e)=>{
+  e.preventDefault();
+  const btn=e.currentTarget;
+  const note=document.getElementById('builderShareNote');
+  const waUrl=btn.href;
+  note.textContent='';
+
+  try{
+    const dataUrl=window.captureCakeImage?window.captureCakeImage():null;
+    if(dataUrl && navigator.canShare){
+      try{
+        const blob=await(await fetch(dataUrl)).blob();
+        const file=new File([blob],'mi-torta-isacakes.png',{type:'image/png'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({files:[file],text:waMessageText,title:'Mi torta personalizada — Isa\'Cakes'});
+          return;
+        }
+      }catch(shareErr){
+        if(shareErr.name==='AbortError')return;
+      }
+    }
+    if(dataUrl){
+      const a=document.createElement('a');
+      a.href=dataUrl;
+      a.download='mi-torta-isacakes.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      note.textContent='📥 Descargamos una foto de tu torta — adjúntala en el chat de WhatsApp que se va a abrir.';
+    }
+    window.open(waUrl,'_blank');
+  }catch(err){
+    window.open(waUrl,'_blank');
+  }
+});
 </script>
 
 <script type="module">
@@ -1570,7 +1757,7 @@ const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(35,W/H,0.1,100);
 camera.position.set(0,3.1,6.4);
 
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
 renderer.setSize(W,H);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -1935,6 +2122,11 @@ function animate(t){
   renderer.render(scene,camera);
 }
 requestAnimationFrame(animate);
+
+window.captureCakeImage=function(){
+  renderer.render(scene,camera);
+  return renderer.domElement.toDataURL('image/png');
+};
 
 window.render3DCake();
 </script>
