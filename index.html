@@ -499,15 +499,26 @@ section{padding:80px 24px}
 .builder-cta svg{width:18px;height:18px;fill:currentColor}
 .builder-share-note{font-size:.78rem;color:var(--text-light);margin-top:10px}
 .band-help{font-size:.8rem;color:var(--text-light);margin-bottom:10px}
-#bandFile{font-size:.85rem;max-width:100%}
-.band-row{margin:12px 0 10px}
-.band-row select{
-  padding:9px 12px;border-radius:10px;border:1px solid rgba(92,61,46,0.18);
-  background:var(--cream);font-size:.85rem;color:var(--text);
+.band-add{
+  display:inline-block;padding:9px 18px;border-radius:20px;
+  border:1px dashed var(--rose);color:var(--rose);
+  font-size:.85rem;font-weight:600;cursor:pointer;
 }
-.band-remove{
-  margin-top:12px;background:none;border:none;
-  color:#b3261e;font-size:.8rem;text-decoration:underline;cursor:pointer;
+.band-add:hover{background:var(--rose-pale)}
+.band-msg{font-size:.78rem;color:#b3261e;margin-top:8px}
+.band-item{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  border:1px solid rgba(92,61,46,0.15);border-radius:12px;
+  padding:10px;margin-bottom:10px;background:var(--cream);
+}
+.band-item img{width:72px;height:36px;object-fit:cover;border-radius:6px}
+.band-item select{
+  padding:7px 10px;border-radius:8px;border:1px solid rgba(92,61,46,0.18);
+  background:#fff;font-size:.8rem;color:var(--text);
+}
+.band-item .band-remove{
+  margin-left:auto;background:none;border:none;
+  color:#b3261e;font-size:.78rem;text-decoration:underline;cursor:pointer;
 }
 @media(max-width:860px){
   .builder-wrap{grid-template-columns:1fr}
@@ -1001,20 +1012,12 @@ section{padding:80px 24px}
       </div>
 
       <div class="builder-group">
-        <label class="group-label">8. Tira de imagen (referencia)</label>
-        <p class="band-help">Sube una imagen y la envolvemos como una tira alrededor de un piso.</p>
-        <input type="file" id="bandFile" accept="image/*">
-        <div id="bandControls" style="display:none">
-          <div class="band-row">
-            <select id="bandTierSelect"></select>
-          </div>
-          <div class="pill-row" id="opt-bandheight">
-            <button data-val="delgada">Delgada</button>
-            <button data-val="media" class="active">Media</button>
-            <button data-val="ancha">Ancha</button>
-          </div>
-          <button type="button" class="band-remove" id="bandRemoveBtn">Quitar imagen</button>
-        </div>
+        <label class="group-label">8. Tiras de imagen (referencia)</label>
+        <p class="band-help">Sube una imagen por piso y la envolvemos como una tira. Puedes agregar una en cada piso.</p>
+        <div id="bandList"></div>
+        <label class="band-add" for="bandFile">+ Agregar imagen</label>
+        <input type="file" id="bandFile" accept="image/*" hidden>
+        <p class="band-msg" id="bandMsg"></p>
       </div>
 
       <div class="builder-group">
@@ -1579,9 +1582,7 @@ const cb={
   clientName:'',
   deliveryDate:'',
   notes:'',
-  bandImage:null,
-  bandTier:0,
-  bandHeight:'media'
+  bands:[]
 };
 
 function cbEnsureTierArrays(){
@@ -1616,12 +1617,28 @@ function renderTierConfigs(){
   });
 }
 
+const BAND_HEIGHT_LABEL={delgada:'Delgada',media:'Media',ancha:'Ancha'};
+let bandSeq=0;
+
+function tierLabel(i){
+  return `Piso ${i+1}${cb.tiers>1?(i===0?' (base)':i===cb.tiers-1?' (superior)':''):''}`;
+}
+
 function renderBandControls(){
-  if(cb.bandTier>=cb.tiers)cb.bandTier=cb.tiers-1;
-  document.getElementById('bandControls').style.display=cb.bandImage?'block':'none';
-  const sel=document.getElementById('bandTierSelect');
-  sel.innerHTML=Array.from({length:cb.tiers},(_,i)=>
-    `<option value="${i}" ${cb.bandTier===i?'selected':''}>Piso ${i+1}${cb.tiers>1?(i===0?' (base)':i===cb.tiers-1?' (superior)':''):''}</option>`).join('');
+  cb.bands=cb.bands.filter(b=>{
+    if(b.tier<cb.tiers)return true;
+    const free=[...Array(cb.tiers).keys()].find(t=>!cb.bands.some(o=>o!==b&&o.tier===t));
+    if(free===undefined)return false;
+    b.tier=free;
+    return true;
+  });
+  document.getElementById('bandList').innerHTML=cb.bands.map(b=>`
+    <div class="band-item" data-id="${b.id}">
+      <img src="${b.src}" alt="">
+      <select class="band-tier">${Array.from({length:cb.tiers},(_,i)=>`<option value="${i}" ${b.tier===i?'selected':''}>${tierLabel(i)}</option>`).join('')}</select>
+      <select class="band-height">${Object.entries(BAND_HEIGHT_LABEL).map(([k,v])=>`<option value="${k}" ${b.height===k?'selected':''}>${v}</option>`).join('')}</select>
+      <button type="button" class="band-remove">Quitar</button>
+    </div>`).join('');
 }
 
 function renderCake(){
@@ -1656,7 +1673,7 @@ function renderSummary(){
     ${tiersDetail}<br>
     Cobertura: ${CB_COATING_LABEL[cb.coating]} · Tema: ${themeLabel}<br>
     Decoración: ${decorList} · Velas: ${cb.candles} · Sección: ${cb.category==='ninos'?'Niños':'Adultos'}
-    ${cb.bandImage?'<br>Tira de imagen: piso '+(cb.bandTier+1)+' ('+cb.bandHeight+')':''}
+    ${cb.bands.map(b=>'<br>Tira de imagen: piso '+(b.tier+1)+' ('+b.height+')').join('')}
     ${cb.plaqueText.trim()?'<br>Mensaje: "'+cb.plaqueText.trim()+'"':''}
   `;
 
@@ -1669,7 +1686,7 @@ function renderSummary(){
     `- Cobertura: ${CB_COATING_LABEL[cb.coating]}`,
     `- Tema de color: ${themeLabel}`,
     `- Decoración extra: ${decorList}`,
-    cb.bandImage?`- Tira de imagen en el piso ${cb.bandTier+1} (${cb.bandHeight}) — se ve en la foto adjunta`:null,
+    ...cb.bands.map(b=>`- Tira de imagen en el piso ${b.tier+1} (${b.height}) — se ve en la foto adjunta`),
     `- Velas: ${cb.candles}`,
     `- Sección: ${cb.category==='ninos'?'Tortas Niños':'Tortas Adultos'}`,
     cb.plaqueText.trim()?`- Mensaje en la torta: "${cb.plaqueText.trim()}"`:null,
@@ -1703,22 +1720,43 @@ cbSetupPillGroup('opt-tiers',v=>{cb.tiers=+v;renderCake();});
 cbSetupPillGroup('opt-size',v=>{cb.size=v;renderCake();});
 cbSetupPillGroup('opt-coating',v=>{cb.coating=v;renderCake();});
 cbSetupPillGroup('opt-category',v=>{cb.category=v;renderCake();});
-cbSetupPillGroup('opt-bandheight',v=>{cb.bandHeight=v;renderCake();});
-document.getElementById('bandTierSelect').addEventListener('change',e=>{cb.bandTier=+e.target.value;renderCake();});
-document.getElementById('bandRemoveBtn').addEventListener('click',()=>{
-  cb.bandImage=null;
-  document.getElementById('bandFile').value='';
+document.getElementById('bandList').addEventListener('change',e=>{
+  const item=e.target.closest('.band-item');
+  if(!item)return;
+  const band=cb.bands.find(b=>String(b.id)===item.dataset.id);
+  if(!band)return;
+  if(e.target.classList.contains('band-tier')){
+    const newTier=+e.target.value;
+    const other=cb.bands.find(o=>o!==band&&o.tier===newTier);
+    if(other)other.tier=band.tier;
+    band.tier=newTier;
+  }else if(e.target.classList.contains('band-height')){
+    band.height=e.target.value;
+  }
+  renderCake();
+});
+document.getElementById('bandList').addEventListener('click',e=>{
+  if(!e.target.classList.contains('band-remove'))return;
+  const item=e.target.closest('.band-item');
+  cb.bands=cb.bands.filter(b=>String(b.id)!==item.dataset.id);
   renderCake();
 });
 document.getElementById('bandFile').addEventListener('change',e=>{
   const file=e.target.files[0];
+  e.target.value='';
   if(!file)return;
+  const msg=document.getElementById('bandMsg');
+  msg.textContent='';
+  const freeTier=[...Array(cb.tiers).keys()].find(t=>!cb.bands.some(b=>b.tier===t));
+  if(freeTier===undefined){
+    msg.textContent='Ya hay una imagen en cada piso. Quita una o agrega más pisos.';
+    return;
+  }
   const reader=new FileReader();
   reader.onload=ev=>{
     const img=new Image();
     img.onload=()=>{
-      const maxW=1024;
-      const scale=Math.min(1,maxW/img.width);
+      const scale=Math.min(1,1024/img.width);
       const canvas=document.createElement('canvas');
       canvas.width=Math.round(img.width*scale);
       canvas.height=Math.round(img.height*scale);
@@ -1726,7 +1764,7 @@ document.getElementById('bandFile').addEventListener('change',e=>{
       ctx.fillStyle='#fff';
       ctx.fillRect(0,0,canvas.width,canvas.height);
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
-      cb.bandImage=canvas.toDataURL('image/jpeg',0.8);
+      cb.bands.push({id:++bandSeq,src:canvas.toDataURL('image/jpeg',0.8),tier:freeTier,height:'media'});
       renderCake();
     };
     img.src=ev.target.result;
@@ -2008,19 +2046,19 @@ function makeToppFlag(text){
 }
 
 const BAND_HEIGHT={delgada:0.28,media:0.55,ancha:0.9};
-let bandImg=null,bandImgSrc=null;
-function syncBandImage(src){
-  if(!src){bandImg=null;bandImgSrc=null;return;}
-  if(src===bandImgSrc)return;
-  bandImgSrc=src;
-  bandImg=null;
-  const img=new Image();
-  img.onload=()=>{if(bandImgSrc===src){bandImg=img;window.render3DCake();}};
-  img.src=src;
+const bandImgs=new Map();
+function syncBandImages(bands){
+  bands.forEach(b=>{
+    if(bandImgs.has(b.src))return;
+    bandImgs.set(b.src,null);
+    const img=new Image();
+    img.onload=()=>{bandImgs.set(b.src,img);window.render3DCake();};
+    img.src=b.src;
+  });
 }
 
 window.render3DCake=function(){
-  syncBandImage(window.cb.bandImage);
+  syncBandImages(window.cb.bands);
   const cb=window.cb;
   scene.remove(cakeGroup);
   cakeGroup=new THREE.Group();
@@ -2056,8 +2094,10 @@ window.render3DCake=function(){
     mesh.position.y=y+h/2;
     cakeGroup.add(mesh);
 
-    if(cb.bandImage && cb.bandTier===i && bandImg){
-      const bh=h*BAND_HEIGHT[cb.bandHeight];
+    const bandDef=cb.bands.find(b=>b.tier===i);
+    const bandImg=bandDef?bandImgs.get(bandDef.src):null;
+    if(bandImg){
+      const bh=h*BAND_HEIGHT[bandDef.height];
       const aspect=bandImg.width/bandImg.height;
       const makeTex=(faceWidth)=>{
         const t=new THREE.Texture(bandImg);
